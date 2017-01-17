@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  angular.module('main', ['ionic','intro'])
+  angular.module('main', ['ionic','intro','root'])
     .config(['$ionicConfigProvider',
       function($ionicConfigProvider) {
         /**

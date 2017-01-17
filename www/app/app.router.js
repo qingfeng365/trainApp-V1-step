@@ -4,14 +4,23 @@
   currApp
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       $stateProvider.state('app', {
-        url: '/app',
+        url: '',
+        abstract: true,
         views: {
           '': {
             templateUrl: 'app/app.template.main.html',
-            controller: 'app.mainController',
-            controllerAs: 'vm',
           }
         }
-      });
+      });  
+
+      $stateProvider.state('app.tab', {
+        url: '',
+        abstract: true,
+        views: {
+          '': {
+            templateUrl: 'app/app.template.tabs.html',
+          }
+        }
+      });  
     }]);
 })();

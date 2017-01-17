@@ -16,7 +16,7 @@
         };
 
         vm.gotoHome = function() {
-          $state.go('app', {});
+          $state.go('app.tab.life', {});
           $window.localStorage['intromain_isshowed'] = 'true';
         };
         

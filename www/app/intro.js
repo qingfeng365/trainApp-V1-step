@@ -1,4 +1,4 @@
 (function() {
   'use strict';
-    angular.module('intro',['app']);
+    angular.module('intro',['app','life']);
 })();
