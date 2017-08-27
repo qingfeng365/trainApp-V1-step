@@ -42,7 +42,7 @@
       <ion-item>
         <h2><strong>{{store.name}}</strong></h2><i ng-repeat="star in store.star track by $index" ng-class="{'energized':star===1,'gray':star===0}" class="icon ion-android-star"></i><span class="gray font-size-12 padding-horizontal">&nbsp;&nbsp;¥&nbsp;&nbsp;{{store.spend}}/人</span><span class="gray font-size-12 padding-horizontal">&nbsp;&nbsp;{{store.loc}}</span><span class="gray font-size-12 padding-horizontal">&nbsp;&nbsp;{{store.distance}}公里</span>
       </ion-item>
-      <ion-item ng-repeat="product in store.products" ng-show="store.products.length" class="item-thumbnail-left"><img ng-src="{{product.img}}"/>
+      <ion-item ng-repeat="product in store.products" ng-show="store.products.length" ng-click="gotoUrl('#/productDetail/{{store.id}}/{{product.id}}')" class="item-thumbnail-left"><img ng-src="{{product.img}}"/>
         <h3>{{product.name}}</h3>
         <div class="row marging-top">
           <div class="col"><span class="assertive font-size-24">¥ {{product.currentPrice}}</span><span class="gray font-size-16">

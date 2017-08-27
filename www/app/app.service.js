@@ -1,6 +1,88 @@
 (function() {
   'use strict';
   var currApp = angular.module('app');
+
+
+  currApp
+    .service('appCartService', ['$q', '$http',
+      function($q, $http) {
+        this.shoppingCart = {
+          storeSells: [],
+          qtyTotal: 0,
+          moneyTotal: 0
+        };
+
+        this.addtoCart = function(store, product) {
+          var self = this;
+          return $q(function(resolve, reject) {
+            var storeSellitem = _.findWhere(self.shoppingCart.storeSells, { id: store.id });
+            if (!storeSellitem) {
+              storeSellitem = {
+                id: store.id,
+                type: store.type,
+                img: store.img,
+                name: store.name,
+                loc: store.loc,
+                mallId: store.mallId,
+                star: store.star,
+                spend: store.spend,
+                reservation: store.reservation,
+                distance: store.distance,
+                display: store.display,
+                recommend: store.recommend,
+              };
+
+              storeSellitem.__select = true;
+              storeSellitem.products = [];
+
+              self.shoppingCart.storeSells.push(storeSellitem);
+            }
+
+            var productItem = _.findWhere(storeSellitem.products, { id: product.id });
+            if (productItem) {
+              productItem.qty = productItem.qty + 1;
+            } else {
+              productItem = {
+                id: product.id,
+                type: product.type,
+                img: product.img,
+                name: product.name,
+                loc: product.loc,
+                storeId: product.storeId,
+                currentPrice: product.currentPrice,
+                originPrice: product.originPrice,
+                saledCount: product.saledCount,
+                display: product.display
+              };
+              productItem.__select = true;
+              productItem.qty = 1;
+              storeSellitem.products.push(productItem);
+            }
+            self.updateTatal();
+            resolve(true);
+          });
+        };
+
+        //重算合计
+        this.updateTatal = function() {
+          var qtyTotal = 0;
+          var moneyTotal = 0;
+          _.each(this.shoppingCart.storeSells, function(store, index) {
+            _.each(store.products, function(product, index) {
+              if (product.__select) {
+                qtyTotal = qtyTotal + product.qty;
+                moneyTotal = moneyTotal + (product.qty * product.currentPrice);
+              }
+            });
+          });
+          this.shoppingCart.qtyTotal = qtyTotal;
+          this.shoppingCart.moneyTotal = moneyTotal;
+        };
+      }
+    ]);
+
+
+  
   currApp
     .service('appDataService', ['$q', '$http',
       function($q, $http) {
@@ -29,6 +111,22 @@
             }, 1000);
           });
         };
+        this.getStoreProductDetail = function(storeid, productid) {
+          var self = this;
+          return $q(function(resolve, reject) {
+            //静态演示,制造1秒延时效果
+            setTimeout(function() {
+              var store = null;
+              var product = null;
+
+              store = _.findWhere(self.demoDatas.stores, { id: storeid });
+              if (store) {
+                product = _.findWhere(store.products, { id: productid });
+              }
+              resolve({ store: store, product: product });
+            }, 1000);
+          });
+        };        
 
         this.demoDatas = {};
         /* 生活频道首页商铺列表数据 */
